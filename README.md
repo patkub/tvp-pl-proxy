@@ -7,6 +7,8 @@
 npm install
 ```
 
+Install the [userscript](https://github.com/patkub/tvp-pl-proxy/raw/master/vod.tvp.pl%20proxy.user.js)
+
 ### Run the proxy
 
 ```
