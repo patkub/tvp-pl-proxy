@@ -7,7 +7,6 @@ const http = require('http')
 const express = require('express')
 const router = express.Router()
 const app = express()
-const axios = require('axios')
 const request = require('request')
 // proxy nova scrapper
 const proxyNova = require('./proxyNova')
