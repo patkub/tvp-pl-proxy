@@ -33,6 +33,7 @@ let proxyArray = [];
 
 // don't refresh if previous refresh didn't finish
 let finishedRefresh = true;
+let finishRefreshTimer;
 
 // map proxy urls to number of retries
 let proxyRetriesMap = new Map();
@@ -46,6 +47,7 @@ setInterval(function() {
 }, 60 * 60 * 1000);
 
 function refreshProxies() {
+  clearTimeout(finishRefreshTimer);
   console.log("Refreshing proxies...");
   
   if (finishedRefresh) {
@@ -71,6 +73,11 @@ function refreshProxies() {
             console.log("Updated proxies.");
         })
   }
+  
+  // finish refresh after 2 minutes
+  finishRefreshTimer = setTimeout(function() {
+    finishedRefresh = true;
+  }, 2 * 60 * 1000);
 }
 
 // sort proxies by ascending number of retries
