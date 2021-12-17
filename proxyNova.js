@@ -59,7 +59,7 @@ function getProxyNovaList(url) {
                     
                     const ip_el_html = $(ip_el).html()
                     if (ip_el_html && ip_el_html.match(docWritePattern)) {
-                        proxy.ip = ip_el_html.match(docWritePattern)[1]
+                        proxy.ip = ip_el_html.match(docWritePattern)[1].replace(/\'\ \+\ \'/g, "")
                     }
                     
                     if (proxy.ip !== '' && proxy.port !== '') {

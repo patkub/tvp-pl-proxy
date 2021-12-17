@@ -16,7 +16,7 @@ Install the [userscript](https://github.com/patkub/tvp-pl-proxy/raw/master/vod.t
 ### Run the proxy
 
 ```
-node index.js
+npm start
 ```
 
 ### Available Commands: 
