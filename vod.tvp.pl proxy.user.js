@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         vod.tvp.pl proxy
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  access vod.tvp.pl anywhere!
 // @author       You
 // @include      https://vod.tvp.pl/video/*
@@ -58,10 +58,20 @@ video {
             url: apiProxyUrl,
             onload: function (responseDetails) {
                 const respJson = JSON.parse(responseDetails.responseText)
+
+                let mp4sByBitrate = respJson.formats
+                    .filter(fmt => fmt.mimeType.toLowerCase() == "video/mp4")
+                    .sort((a, b) => (a.totalBitrate > b.totalBitrate) ? -1 : 1)
+                // rewrite http to https urls
+                for (let i = 0; i < mp4sByBitrate.length; i++) {
+                    // must be https because mixed content not allowed on page
+                    mp4sByBitrate[i].url = mp4sByBitrate[i].url.replace(/^http:\/\//i, 'https://');
+                }
+
                 // get highest quality
-                const video_url = respJson.formats[0].url
+                const video_url = mp4sByBitrate[0].url
                 // try a lower quality
-                //const video_url = respJson.formats[4 % respJson.formats.length].url // 4 % respJson.formats.length
+                //const video_url = mp4sByBitrate[4 % respJson.formats.length].url // 4 % respJson.formats.length
 
                 // create video player
                 const vid = document.createElement("video")
@@ -74,6 +84,8 @@ video {
                 source.type = "video/mp4"
                 vid.appendChild(source)
 
+                // clear old video player
+                tvplayer.innerHTML = "";
                 // append video player to the DOM
                 tvplayer.appendChild(vid);
             }
